@@ -5,8 +5,8 @@ let {destinations}=require("./db");
 const {generateUniqueId}=require("./services");
 server.use(express.json());  //allows the server to parse body to json
 
-
-server.listen(process.env.PORT || 3000,function(){
+let PORT= process.env.PORT || 3000;
+server.listen(PORT,function(){
     console.log("Server listen on PORT 3000");
 }); // listen to port 3000
 
