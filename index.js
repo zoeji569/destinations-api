@@ -17,7 +17,7 @@ server.get("/destinations",(req,res)=>{
 })
 
 server.post("/destinations", async (req,res)=>{
-    const {name,location,photo, description} = req.body; //destructure body
+    const {name,location,description} = req.body; //destructure body
 
     if(name===undefined || 
        name.length===0 ||
@@ -29,18 +29,17 @@ server.post("/destinations", async (req,res)=>{
     }
 
     const dest= {id:generateUniqueId(), name, location};
-    const UNSPLASH_URL = `https://api.unsplash.com/photos/random?client_id=bov0CB5rjCu3qiEZpgq9QgMsionOXLhpj6-VNtsjfVs&query=${name} ${location}`;
+    const UNSPLASH_URL = `https://api.unsplash.com/photos/random?client_id=bov0CB5rjCu3qiEZpgq9QgMsionOXLhpj6-VNtsjfVs&q=${name} ${location}`;
     
     const fetchRes = await fetch(UNSPLASH_URL);
     const data = await fetchRes.json();
-    if(photo){
-        dest.photo=photo;
-    }
-    if(description){
-        dest.description=description;
-    }
-    
 
+    dest.photo = data.urls.small;
+
+    if (description && description.length !== 0) {
+    dest.description = description;
+  }
+    
     destinations.push(dest);
 
     res.redirect("/destinations");
@@ -55,7 +54,7 @@ server.delete("/destinations/:id",(req,res)=>{
 
     destinations = newDestinations;
     
-    red.redirect("/destinations");
+    res.redirect("/destinations");
 
 });
 
@@ -75,7 +74,7 @@ server.put("/destinations/",(req,res)=>{
     }
     
     for (const dest of destinations){
-        if(dest.id=id){
+        if(dest.id===id){
             if(name){
                 dest.name=name;
             }
