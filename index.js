@@ -17,7 +17,7 @@ server.get("/destinations",(req,res)=>{
 })
 
 server.post("/destinations", async (req,res)=>{
-    const {name,location,photo,destinations} = req.body; //destructure body
+    const {name,location,photo, description} = req.body; //destructure body
 
     if(name===undefined || 
        name.length===0 ||
@@ -33,9 +33,13 @@ server.post("/destinations", async (req,res)=>{
   
     const fetchRes = await fetch(UNSPLASH_URL);
     const data = await fetchRes.json();
-
-    dest.photo=photo;
-    dest.description=description;
+    if(photo){
+        dest.photo=photo;
+    }
+    if(description){
+        dest.description=description;
+    }
+    
 
     destinations.push(dest);
 
