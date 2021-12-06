@@ -3,7 +3,9 @@ const fetch = require("node-fetch");
 const server=express();
 let {destinations}=require("./db");
 const {generateUniqueId}=require("./services");
+const cors = require("cors");
 server.use(express.json());  //allows the server to parse body to json
+server.use(cors());
 
 let PORT= process.env.PORT || 3000;
 server.listen(PORT,function(){
