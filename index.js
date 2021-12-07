@@ -91,9 +91,10 @@ server.put("/destinations/", (req, res) => {
       }
 
       //return res.json(dest);
-      res.redirect(303,"/destinations");
+      
     }
   }
+  res.redirect(303,"/destinations");
 });
 
 // DELETE => delete a destination
