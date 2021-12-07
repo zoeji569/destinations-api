@@ -90,7 +90,8 @@ server.put("/destinations/", (req, res) => {
         dest.description = description;
       }
 
-      return res.json(dest);
+      //return res.json(dest);
+      res.redirect(303,"/destinations");
     }
   }
 });
