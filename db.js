@@ -1,9 +1,3 @@
-const destinations=[
-        {
-        id:"456789",
-        name:"Hollywood",
-        location:"Los Angeles"
-    }
-]
+const destinations = [];
 
-module.exports={destinations};
+module.exports = { destinations };
