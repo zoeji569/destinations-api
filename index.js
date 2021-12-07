@@ -34,7 +34,6 @@ server.post("/destinations", async (req, res) => {
 
   const dest = { id: generateUniqueId(), name, location };
 
-  
   const UNSPLASH_URL = `https://api.unsplash.com/photos/random?client_id=bov0CB5rjCu3qiEZpgq9QgMsionOXLhpj6-VNtsjfVs&query=${name} ${location}`;
   const fetchRes = await fetch(UNSPLASH_URL);
   const data = await fetchRes.json();
@@ -107,5 +106,5 @@ server.delete("/destinations/:id", (req, res) => {
 
   destinations = newDestinations;
 
-  res.redirect("/destinations");
+  res.redirect(303,"/destinations");
 });
