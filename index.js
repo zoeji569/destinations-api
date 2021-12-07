@@ -9,9 +9,9 @@ server.use(express.json());
 // server.use(express.urlencoded())
 
 
-let PORT = process.nextTick.PORT || 3000;
+let PORT = process.env.PORT || 3000;
 server.listen(PORT, function(){
-  console.log(`Server listing on PORT ${PORT}`);
+  console.log(`Server listening on PORT ${PORT}`);
 });
 
 // POST => create destinations
