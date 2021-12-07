@@ -18,7 +18,7 @@ server.listen(PORT, function(){
 // POST => create destinations
 // data => {name^, location^, photo, description}
 server.post("/destinations", async (req, res) => {
-  const { name, location, photo, description } = req.body;
+  const { name, location, description } = req.body;
 
   // Make sure we have a name AND location
   if (
@@ -34,8 +34,8 @@ server.post("/destinations", async (req, res) => {
 
   const dest = { id: generateUniqueId(), name, location };
 
-  const UNSPLASH_URL = `https://api.unsplash.com/photos/random?client_id=bov0CB5rjCu3qiEZpgq9QgMsionOXLhpj6-VNtsjfVs&q=${name} ${location}`;
-
+  
+  const UNSPLASH_URL = `https://api.unsplash.com/photos/random?client_id=bov0CB5rjCu3qiEZpgq9QgMsionOXLhpj6-VNtsjfVs&query=${name} ${location}`;
   const fetchRes = await fetch(UNSPLASH_URL);
   const data = await fetchRes.json();
 
