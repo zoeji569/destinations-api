@@ -11,7 +11,7 @@ server.use(express.json());
 
 let PORT = process.nextTick.PORT || 3000;
 server.listen(PORT, function(){
-  console.log("Server listing on PORT ${PORT}");
+  console.log(`Server listing on PORT ${PORT}`);
 });
 
 // POST => create destinations
