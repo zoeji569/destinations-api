@@ -1,16 +1,5 @@
 const fetch = require("node-fetch");
-function generateUniqueId() {
-  // "123456"
-  let id = "";
 
-  for (let index = 0; index < 6; index++) {
-    const randNumber = Math.floor(Math.random() * 9) + 1;
-
-    id += randNumber;
-  }
-
-  return id;
-}
 
 
 async function getUnsplashPhoto({name,location}){

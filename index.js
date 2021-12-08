@@ -2,15 +2,25 @@ const express = require("express");
 const cors=require("cors");
 
 const { redirect } = require("statuses");
-let { destinations } = require("./db");
-const { generateUniqueId, getUnsplashPhoto } = require("./services");
+const { getUnsplashPhoto } = require("./services");
+const { MongoClient } = require("mongodb");
 
 const server = express();
 server.use(express.json());
 server.use(cors());
+server.use(express.urlencoded({ extended: true}));
 
+const MongoDB_URL= "mongodb+srv://zoej569:Zoe596391_@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const client = new MongoClient(MongoDB_URL);
+const dbName = "first mongodb";
 
-let PORT = process.env.PORT || 3000;
+client.connect()
+.then(()=>{
+  const db= client.db("first_mongodb")
+
+  const destinations = db.collection("destinations") // create a destinations collection on my database
+  
+  let PORT = process.env.PORT || 3000;
 server.listen(PORT, function(){
   console.log(`Server listening on PORT ${PORT}`);
 });
@@ -32,7 +42,7 @@ server.post("/destinations", async (req, res) => {
       .json({ message: "Name and Location are both required" });
   }
 
-  const dest = { id: generateUniqueId(), name, location };
+  const dest = { name, location };
 
  
 
@@ -42,7 +52,7 @@ server.post("/destinations", async (req, res) => {
     dest.description = description;
   }
 
-  destinations.push(dest);
+  destinations.insertOne(dest);
 
   res.redirect("/destinations");
 });
@@ -50,8 +60,9 @@ server.post("/destinations", async (req, res) => {
 // GET => read destinations
 // accepts the follow query parameters
 // continent
-server.get("/destinations", (req, res) => {
-  res.send(destinations);
+server.get("/destinations", async (req, res) => {
+  const data = await destinations.find({}).toArray();
+  res.send(data);
 });
 
 // PUT => edit a destination
@@ -69,6 +80,7 @@ server.put("/destinations/", async (req, res) => {
   if (location !== undefined && location.length === 0) {
     return res.status(400).json({ message: "Location can't be empty" });
   }
+    
 
   for (const dest of destinations) {
     if (dest.id === id) {
@@ -83,8 +95,8 @@ server.put("/destinations/", async (req, res) => {
       if(name !==undefined || location !== undefined){
         dest.photo = await getUnsplashPhoto({
           name:dest.name,
-          location:dest.location
-        })
+          location:dest.location,
+        });
       }
      
       if (description !== undefined) {
@@ -110,3 +122,6 @@ server.delete("/destinations/:id", (req, res) => {
 
   res.redirect(303,"/destinations");
 });
+
+})
+
