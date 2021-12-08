@@ -1,9 +1,9 @@
 const express = require("express");
 const cors=require("cors");
-const fetch = require("node-fetch");
+
 const { redirect } = require("statuses");
 let { destinations } = require("./db");
-const { generateUniqueId } = require("./services");
+const { generateUniqueId, getUnsplashPhoto } = require("./services");
 
 const server = express();
 server.use(express.json());
@@ -34,11 +34,9 @@ server.post("/destinations", async (req, res) => {
 
   const dest = { id: generateUniqueId(), name, location };
 
-  const UNSPLASH_URL = `https://api.unsplash.com/photos/random?client_id=bov0CB5rjCu3qiEZpgq9QgMsionOXLhpj6-VNtsjfVs&query=${name} ${location}`;
-  const fetchRes = await fetch(UNSPLASH_URL);
-  const data = await fetchRes.json();
+ 
 
-  dest.photo = data.urls.small;
+  dest.photo = await getUnsplashPhoto({name,location});
 
   if (description && description.length !== 0) {
     dest.description = description;
@@ -57,8 +55,8 @@ server.get("/destinations", (req, res) => {
 });
 
 // PUT => edit a destination
-server.put("/destinations/", (req, res) => {
-  const { id, name, location, photo, description } = req.body;
+server.put("/destinations/", async (req, res) => {
+  const { id, name, location, description } = req.body;
 
   if (id === undefined) {
     return res.status(400).json({ message: "id is required" });
@@ -82,19 +80,21 @@ server.put("/destinations/", (req, res) => {
         dest.location = location;
       }
 
-      if (photo !== undefined) {
-        dest.photo = photo;
+      if(name !==undefined || location !== undefined){
+        dest.photo = await getUnsplashPhoto({
+          name:dest.name,
+          location:dest.location
+        })
       }
-
+     
       if (description !== undefined) {
         dest.description = description;
       }
 
-      //return res.json(dest);
+      return res.json(dest);
       
     }
   }
-  res.redirect(303,"/destinations");
 });
 
 // DELETE => delete a destination
