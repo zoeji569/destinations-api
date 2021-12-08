@@ -10,15 +10,15 @@ server.use(express.json());
 server.use(cors());
 server.use(express.urlencoded({ extended: true}));
 
-const MongoDB_URL= "mongodb+srv://zoej569:Zoe596391_@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const MongoDB_URL= "mongodb+srv://zoej569:Zoe596391_@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(MongoDB_URL);
 const dbName = "first mongodb";
 
 client.connect()
 .then(()=>{
-  const db= client.db("first_mongodb")
+  const db= client.db("first_mongodb");
 
-  const destinations = db.collection("destinations") // create a destinations collection on my database
+  const destinations = db.collection("destinations"); // create a destinations collection on my database
   
   let PORT = process.env.PORT || 3000;
 server.listen(PORT, function(){
@@ -43,8 +43,6 @@ server.post("/destinations", async (req, res) => {
   }
 
   const dest = { name, location };
-
- 
 
   dest.photo = await getUnsplashPhoto({name,location});
 
