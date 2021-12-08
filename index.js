@@ -1,9 +1,9 @@
 const express = require("express");
 const cors=require("cors");
 
-const { redirect } = require("statuses");
+
 const { getUnsplashPhoto } = require("./services");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 const server = express();
 server.use(express.json());
@@ -95,7 +95,10 @@ const newDest = {
       }
 
 
-     const updateDest=await destinations.updateOne({_id:id},newDest);
+     const updateDest=await destinations.updateOne(
+       {_id:ObjectId(id)},
+       {$set: newDest});
+
       return res.json(updateDest);
       
   
