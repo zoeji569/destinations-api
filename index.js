@@ -95,7 +95,9 @@ const newDest = {
       }
 
 
-     const updateDest=await destinations.updateOne({_id:ObjectId(id)},newDest);
+     const updateDest=await destinations.updateOne(
+       {_id:ObjectId(id)},
+      {$set: newDest});
       return res.json(updateDest);
       
   
