@@ -10,7 +10,7 @@ server.use(express.json());
 server.use(cors());
 server.use(express.urlencoded({ extended: true}));
 
-const MongoDB_URL= "mongodb+srv://zoej569:Zoe596391_@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const MongoDB_URL= "mongodb+srv://zoej569:Zoe596@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 const client = new MongoClient(MongoDB_URL);
 const dbName = "first mongodb";
 
@@ -81,46 +81,40 @@ server.put("/destinations/", async (req, res) => {
     return res.status(400).json({ message: "Location can't be empty" });
   }
     
-
-  for (const dest of destinations) {
-    if (dest.id === id) {
-      if (name !== undefined) {
-        dest.name = name;
-      }
-
-      if (location !== undefined) {
-        dest.location = location;
-      }
-
-      if(name !==undefined || location !== undefined){
-        dest.photo = await getUnsplashPhoto({
-          name:dest.name,
-          location:dest.location,
-        });
-      }
+const newDest = {
+  name:name,
+  location:location,
+  photo: await getUnsplashPhoto({
+    name:name,
+    location:location,
+  })
+};
      
       if (description !== undefined) {
-        dest.description = description;
+        newDest.description = description;
       }
 
-      return res.json(dest);
+
+     const updateDest=await destinations.updateOne({_id:id},newDest);
+      return res.json(updateDest);
       
-    }
-  }
+  
 });
 
 // DELETE => delete a destination
 // HOW TO GET THE ID from the reqs
 // route parameters /destinations/:id => req.params.id
 // query /destinations?id=198745 => req.query.id
-server.delete("/destinations/:id", (req, res) => {
+server.delete("/destinations/:id", async (req, res) => {
   const destId = req.params.id;
 
   const newDestinations = destinations.filter((dest) => dest.id !== destId);
 
   destinations = newDestinations;
-
+ // const deleteResult= await destinations.deleteOne({_id: destId});
+ // console.log("Deleted documents=>", deleteResult);
   res.redirect(303,"/destinations");
+
 });
 
 })
