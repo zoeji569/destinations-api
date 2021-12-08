@@ -10,7 +10,7 @@ server.use(express.json());
 server.use(cors());
 server.use(express.urlencoded({ extended: true}));
 
-const MongoDB_URL= "mongodb+srv://zoej569:Zoe596@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const MongoDB_URL= "mongodb+srv://zoej569:Zoe596391_@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 const client = new MongoClient(MongoDB_URL);
 const dbName = "first mongodb";
 
