@@ -12,7 +12,7 @@ server.use(express.urlencoded({ extended: true}));
 
 const MongoDB_URL= "mongodb+srv://zoej569:Zoe596391_@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(MongoDB_URL);
-const dbName = "first mongodb";
+const dbName = "first_mongodb";
 
 client.connect()
 .then(()=>{
@@ -21,7 +21,8 @@ client.connect()
   const destinations = db.collection("destinations"); // create a destinations collection on my database
   
   let PORT = process.env.PORT || 3000;
-server.listen(PORT, function(){
+  
+  server.listen(PORT, function(){
   console.log(`Server listening on PORT ${PORT}`);
 });
 
@@ -50,7 +51,7 @@ server.post("/destinations", async (req, res) => {
     dest.description = description;
   }
 
-  destinations.insertOne(dest);
+  
 
   res.redirect("/destinations");
 });
