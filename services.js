@@ -10,4 +10,4 @@ async function getUnsplashPhoto({name,location}){
 
   return data.urls.small;
 }
-module.exports = { generateUniqueId, getUnsplashPhoto };
+module.exports = { getUnsplashPhoto };
