@@ -1,16 +1,16 @@
 const express = require("express");
 const cors=require("cors");
 
-//const { redirect } = require("statuses");
+const { redirect } = require("statuses");
 const { getUnsplashPhoto } = require("./services");
-const { MongoClient} = require("mongodb");
+const { MongoClient } = require("mongodb");
 
 const server = express();
 server.use(express.json());
 server.use(cors());
 server.use(express.urlencoded({ extended: true}));
 
-const MongoDB_URL= "mongodb+srv://zoej569:Zoe596391_@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const MongoDB_URL= "mongodb+srv://zoej569:Zoe596@cluster0.ayyws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 const client = new MongoClient(MongoDB_URL);
 const dbName = "first mongodb";
 
@@ -66,7 +66,7 @@ server.get("/destinations", async (req, res) => {
 });
 
 // PUT => edit a destination
-/*server.put("/destinations/", async (req, res) => {
+server.put("/destinations/", async (req, res) => {
   const { id, name, location, description } = req.body;
 
   if (id === undefined) {
@@ -95,15 +95,12 @@ const newDest = {
       }
 
 
-     const updateDest=await destinations.updateOne(
-       {_id:ObjectId(id)},
-      {$set: newDest}
-      );
+     const updateDest=await destinations.updateOne({_id:id},newDest);
       return res.json(updateDest);
       
   
 });
-*/
+
 // DELETE => delete a destination
 // HOW TO GET THE ID from the reqs
 // route parameters /destinations/:id => req.params.id
